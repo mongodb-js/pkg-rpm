@@ -1,0 +1,8 @@
+{
+  "name": "lilbins",
+  "description": "An example directory structure to work with pkg-rpm",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "author": "Compass Team <compass@mongodb.com>",
+  "main": "src/index.js"
+}

@@ -1,0 +1,53 @@
+# RPM builds will strip debugging symbols from binaries. Mongosh is built with
+# `pkg` and `pkg` does not allow for stripped debugging symbols at the momemnt:
+# https://github.com/vercel/pkg/issues/293
+%global __os_install_post %{nil}
+
+%define _binary_payload w<%= compressionLevel %>.xzdio
+
+Name: <%= name %>
+Version: <%= version %>
+Release: 1%{?dist}
+Group: Development/Tools
+<% if (description) { print(`Summary: ${description}\n`) }
+%>
+<% if (license) { print(`License: ${license}\n`) }
+if (homepage) { print(`URL: ${homepage}\n`) }
+if (license || homepage) { print('\n') }
+%>
+
+<% if (productDescription) {
+%>%description
+<% print(productDescription)
+print('\n\n\n') }
+
+
+%>%install
+mkdir -p %{buildroot}/%{_bindir}/%name
+install -m 755 %{name} %{buildroot}/%{_bindir}/%{name}
+
+
+%files
+%{_bindir}/%{name}
+
+<% if (pre) {
+  %>%pre
+<% print(pre)
+if (preun || post || postun) print('\n\n\n') }
+
+
+%><% if (preun) {
+  %>%preun
+<% print(preun)
+if (post || postun) print('\n\n\n') }
+
+
+%><% if (post) {
+  %>%post
+<% print(post)
+if (postun) print('\n\n\n') }
+
+
+%><% if (postun) {
+  %>%postun
+<% print(postun) } %>
