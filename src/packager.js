@@ -7,6 +7,7 @@ const exec = promisify(require('child_process').exec)
 const createTemplatedFile = require('./template')
 const sanitizeName = require('./sanitize-name')
 const readMetadata = require('./read-metadata')
+const glob = promisify(require('glob'))
 const tmp = require('tmp-promise')
 const wrap = require('word-wrap')
 const debug = require('debug')
@@ -91,8 +92,9 @@ PackageRPM.prototype.createPackage = async function () {
  */
 PackageRPM.prototype.writePackage = async function () {
   this.logger(`Copying package to ${this.dest}`)
-  const outputPackage = path.join(this.dest, `${this.packageName}-${this.arch}.rpm`)
-  await fs.copy(this.getRPMPath(), outputPackage)
+  const outputPath = path.join(this.dest, `${this.packageName}-${this.arch}.rpm`)
+  const rpmFile = await glob(this.getRPMPattern())
+  await fs.move(rpmFile[0], outputPath)
 }
 
 /**
@@ -173,8 +175,8 @@ PackageRPM.prototype.specPath = function () {
  *
  * this.stagingDir/RPMS
  */
-PackageRPM.prototype.getRPMPath = function () {
-  return path.join(this.stagingDir, 'RPMS', this.arch, `${this.packageName}-1.${this.arch}.rpm`)
+PackageRPM.prototype.getRPMPattern = function () {
+  return path.join(this.stagingDir, 'RPMS', this.arch, '*.rpm')
 }
 
 /**
