@@ -1,3 +1,6 @@
+const { promisify } = require('util')
+
+const glob = promisify(require('glob'))
 const expect = require('chai').expect
 const fs = require('fs-extra')
 const packager = require('..')
@@ -145,7 +148,8 @@ describe('Packager', function () {
       await pkgRhel.createSpec()
       await pkgRhel.copyApplication()
       await pkgRhel.createPackage()
-      const doesExist = await fs.pathExists(pkgRhel.getRPMPath())
+      const rpmFile = await glob(pkgRhel.getRPMPattern())
+      const doesExist = await fs.pathExists(rpmFile[0])
       // eslint-disable-next-line
       expect(doesExist).to.be.true
     })
