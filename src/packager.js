@@ -3,7 +3,7 @@
 const { promisify } = require('util')
 
 const getDefaultsFromPackageJSON = require('./defaults')
-const exec = promisify(require('child_process').exec)
+const execFile = promisify(require('child_process').execFile)
 const createTemplatedFile = require('./template')
 const sanitizeName = require('./sanitize-name')
 const readMetadata = require('./read-metadata')
@@ -78,7 +78,7 @@ PackageRPM.prototype.createStagingDir = async function () {
  */
 PackageRPM.prototype.createPackage = async function () {
   this.logger(`Creating package at ${this.stagingDir}`)
-  const output = await exec(`rpmbuild -bb ${this.specPath()} --target ${this.arch} --define "_topdir ${this.stagingDir}"`)
+  const output = await execFile('rpmbuild', ['-bb', this.specPath(), '--target', this.arch, '--define', `_topdir ${this.stagingDir}`])
 
   this.logger('rpmbuild output:', output)
 }
