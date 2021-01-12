@@ -1,0 +1,31 @@
+name: Run Tests
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  check-and-test:
+    name: Check and Test
+    runs-on: ubuntu-20.04
+
+    env:
+      MONGODB_VERSION: ${{ matrix.mongoVersion }}
+      MONGODB_TOPOLOGY: standalone
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12.4.0
+
+      - name: Install Required OS Packages
+        run: sudo apt-get -y install rpm
+
+      - name: Install NPM Packages
+        run: npm ci
+
+      - name: Check and Test
+        run: |
+          npm test
