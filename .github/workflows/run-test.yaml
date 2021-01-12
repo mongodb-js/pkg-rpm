@@ -10,10 +10,6 @@ jobs:
     name: Check and Test
     runs-on: ubuntu-20.04
 
-    env:
-      MONGODB_VERSION: ${{ matrix.mongoVersion }}
-      MONGODB_TOPOLOGY: standalone
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
