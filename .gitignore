@@ -1,6 +1,5 @@
 .nyc_output
 node_modules
-package-lock.json
 /example/dist/
 /test/fixtures/out/
 /test/fixtures/dist/

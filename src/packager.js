@@ -13,6 +13,7 @@ const wrap = require('word-wrap')
 const debug = require('debug')
 const fs = require('fs-extra')
 const path = require('path')
+const normalizeVersion = require('./normalize-version')
 
 const defaultLogger = debug('pkg-rpm')
 
@@ -177,18 +178,4 @@ PackageRPM.prototype.specPath = function () {
  */
 PackageRPM.prototype.getRPMPattern = function () {
   return path.join(this.stagingDir, 'RPMS', this.arch, '*.rpm')
-}
-
-/**
- * Transform current version to a RPM SPEC compliant version.
- */
-function normalizeVersion (version) {
-  const adjustedVersion = version.replace(/[-]/g, '.')
-
-  if (adjustedVersion !== version) {
-    this.logger('Warning: replacing disallowed characters in version to comply with SPEC format.' +
-      `Changing ${version} to ${adjustedVersion}`)
-  }
-
-  return adjustedVersion
 }

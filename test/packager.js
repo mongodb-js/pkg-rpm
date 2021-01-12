@@ -43,6 +43,28 @@ describe('Packager', function () {
       expect(accessErr).to.be.undefined
     })
 
+    it('works with prerelease version', async function () {
+      const opts = {
+        version: '0.0.1-dev.0',
+        name: 'lilbins',
+        dest: dest,
+        src: src,
+        input: input,
+        arch: 'x64'
+      }
+
+      await packager(opts)
+
+      let accessErr
+      try {
+        await fs.access(output)
+      } catch (e) {
+        accessErr = e
+      }
+      // eslint-disable-next-line
+      expect(accessErr).to.be.undefined
+    })
+
     it('fails if input is not a string', async function () {
       const opts = {
         version: '0.0.1',
