@@ -12,12 +12,14 @@ const input = path.join(__dirname, 'fixtures', 'lilbins')
 const dest = path.join(__dirname, 'fixtures', 'dist')
 const src = path.join(__dirname, 'fixtures')
 const output = path.join(dest, 'lilbins-0.0.1-x64.rpm')
+const outputPrerelease = path.join(dest, 'lilbins-0.0.1-dev.0-x64.rpm')
 
 describe('Packager', function () {
   this.timeout(30000)
 
   after(function () {
     fs.remove(output)
+    fs.remove(outputPrerelease)
   })
 
   context('Packager default export', function () {
